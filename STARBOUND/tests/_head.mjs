@@ -1,0 +1,14 @@
+import puppeteer from 'puppeteer-core';
+import path from 'node:path';
+export const browser = await puppeteer.launch({ executablePath: '/usr/bin/google-chrome', headless: 'new', protocolTimeout: 240000, args: ['--no-sandbox', '--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--allow-file-access-from-files'] });
+export const page = await browser.newPage(); await page.setViewport({ width: 1180, height: 760 });
+export const errors = []; page.on('pageerror', (e) => errors.push('PAGEERROR ' + e.message)); page.on('console', (m) => { if (m.type() === 'error') errors.push('CONSOLE ' + m.text()); });
+export const sleep = (ms) => new Promise((r) => setTimeout(r, ms)); export const shot = (n) => page.screenshot({ path: `shots/x_${n}.png` });
+export const clickText = async (text, sel = 'button') => { const ok = await page.evaluate((text, sel) => { const b = [...document.querySelectorAll(sel)].filter((x) => x.offsetParent !== null && x.textContent.trim().includes(text)).pop(); if (b) { b.click(); return true; } return false; }, text, sel); if (!ok) throw new Error('button not found: ' + text); await sleep(250); };
+export const has = (t) => page.evaluate((t) => document.body.textContent.includes(t), t);
+export const waitFor = async (fn, what, n = 240) => { for (let i = 0; i < n; i++) { if (await fn()) return; await sleep(500); } throw new Error('timed out: ' + what); };
+export const step = async (name, fn) => { try { await fn(); console.log('ok   ' + name); } catch (e) { console.log('FAIL ' + name + ': ' + e.message); await shot('fail'); console.log(errors.join('\n')); await browser.close(); process.exit(1); } };
+export const W = (expr) => page.evaluate(`(() => { const w = window.__starbound.engine.active && window.__starbound.engine.active.walker; if (!w) return null; return ${expr}; })()`);
+export const holdUntil = async (key, fn, what, n = 160) => { await page.keyboard.down(key); try { for (let i = 0; i < n; i++) { await sleep(250); if (await fn()) return; } throw new Error('timed out holding ' + key + ': ' + what); } finally { await page.keyboard.up(key); } };
+export const open = async () => { await page.goto('file://' + path.resolve('index.html')); await sleep(3000); };
+export const finish = async () => { console.log(errors.length ? errors.join('\n') : 'NO RUNTIME ERRORS'); await browser.close(); };

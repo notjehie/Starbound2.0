@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>STARBOUND</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<canvas id="view" aria-label="3D view"></canvas>
+
+<div id="hud" hidden>
+  <div id="location" aria-live="polite"></div>
+  <div id="objective" role="status"></div>
+  <div id="stepper" aria-label="Level progress"></div>
+  <div id="crosshair" aria-hidden="true"></div>
+  <div id="prompt" hidden></div>
+  <div id="buddy" hidden></div>
+</div>
+<div id="timer" role="timer" hidden></div>
+<div id="points" hidden aria-label="Mission points"><span>★ POINTS</span><b>0</b></div>
+<div id="pt-pops" aria-live="polite"></div>
+<div id="vignette" aria-hidden="true"></div>
+<button id="btn-settings" type="button" aria-label="Settings">Settings</button>
+<button id="btn-help" type="button" aria-label="How to play">? Help</button>
+<button id="btn-run" type="button" aria-pressed="false">🏃 Run: off</button>
+<button id="btn-pip" type="button" aria-label="Talk to PIP">🤖 Talk to PIP</button>
+<button id="btn-view" type="button" aria-label="Switch camera view">View</button>
+<canvas id="minimap" width="208" height="128" aria-label="Map of the space centre"></canvas>
+<div id="bars" aria-hidden="true"><i></i><i></i></div>
+<div id="toasts" aria-live="polite"></div>
+<div id="dialogue" hidden role="dialog" aria-label="Conversation"></div>
+
+<div id="touch">
+  <div id="touch-pad" aria-hidden="true"><div id="touch-nub"></div></div>
+  <button id="touch-jump" type="button" aria-label="Jump">Jump</button>
+  <button id="touch-run" type="button" aria-pressed="false" aria-label="Run">Run</button>
+  <button id="touch-use" type="button">Interact</button>
+</div>
+
+<div id="overlay" class="overlay" hidden></div>
+<div id="modal" hidden></div>
+<div id="settings" hidden></div>
+
+<div id="title">
+  <i class="streak" style="--y:18%;--d:1.2s"></i><i class="streak" style="--y:62%;--d:4.5s"></i><i class="streak" style="--y:38%;--d:8s"></i>
+  <div class="title-card">
+    <div class="label t-in" style="--d:.1s">NASA Space Apps Challenge project</div>
+    <div class="welcome t-in" style="--d:.5s">Welcome to</div>
+    <h1 id="title-word" aria-label="STARBOUND">STARBOUND</h1>
+    <p class="tag-line t-in" style="--d:1.9s">Design a complete space mission. Build and test the spacecraft. Alone or as a team of four.</p>
+    <div id="title-assist" hidden></div>
+    <div id="title-btns" class="row-btns t-in" style="--d:3.3s"></div>
+    <p id="boot-status" class="note" role="status">Loading&hellip;</p>
+    <p class="build">Build 27</p>
+
+  </div>
+</div>
+
+<div id="fade"><div id="fade-caption"></div></div>
+<noscript><p style="color:#fff;padding:2rem">STARBOUND needs JavaScript and WebGL.</p></noscript>
+
+<!-- Optional real observations. Shipped empty; tools/prepare_tess_data.py fills it. -->
+<script src="data/real_data.js"></script>
+<!-- List of voice recordings present in audio/voice. Shipped empty. -->
+<script src="audio/voice/manifest.js"></script>
+<script src="dist/starbound.js"></script>
+</body>
+</html>
